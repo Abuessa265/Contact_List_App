@@ -26,6 +26,10 @@ class _ContactPageState extends State<ContactPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(25), topLeft: Radius.circular(25))),
+        toolbarHeight: 80,
       ),
       body: Padding(
         padding: EdgeInsets.all(8),
@@ -72,11 +76,11 @@ class _ContactPageState extends State<ContactPage> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
             contacts.isEmpty
                 ? const Text(
-                    'No Contact yet ',
+                    '',
                     style: TextStyle(fontSize: 22),
                   )
                 : Expanded(
@@ -93,23 +97,12 @@ class _ContactPageState extends State<ContactPage> {
 
   Widget getRow(int index) {
     return InkWell(
-      onLongPress: (() {
-        setState(() {
-          contacts.removeAt(index);
-        });
-      }),
+      onLongPress: () {
+        _showDeleteConfirmationDialog(index);
+      },
       child: Card(
         color: Colors.white70,
         child: ListTile(
-          // leading: CircleAvatar(
-          //   backgroundColor:
-          //       index % 2 == 0 ? Colors.deepPurpleAccent : Colors.purple,
-          //   foregroundColor: Colors.white,
-          //   child: Text(
-          //     contacts[index].name[0],
-          //     style: const TextStyle(fontWeight: FontWeight.bold),
-          //   ),
-          // ),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -156,25 +149,42 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ],
           ),
-          // trailing: SizedBox(
-          //   width: 70,
-          //   child: Row(
-          //     children: [
-          //       InkWell(
-          //         onLongPress: () {
-          //           nameController.text = contacts[index].name;
-          //           contactController.text = contacts[index].contact;
-          //           setState(() {
-          //             selectedIndex = index;
-          //           });
-          //         },
-          //         child: const Icon(Icons.phone),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ),
       ),
     );
+  }
+
+  void _showDeleteConfirmationDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Center(
+            child: Text(
+          'Confirmation',
+        )),
+        content: const Text('Are you sure for Delete?'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.cancel, color: Colors.red),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete, color: Colors.blue),
+            onPressed: () {
+              _deleteContact(index);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteContact(int index) {
+    setState(() {
+      contacts.removeAt(index);
+    });
   }
 }
