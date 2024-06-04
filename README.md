@@ -3,7 +3,7 @@
 A new Flutter project.
 
 
-<br />
+
 # Screenshots
 
 <img width="249" alt="c1" src="https://github.com/Abuessa265/Contact_List_App/assets/76743694/5c5bdb54-4104-4cbf-9b30-b0fe2da1a0e5">
